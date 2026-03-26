@@ -73,11 +73,13 @@ def summarize_articles(articles):
     return summary
 
 def build_response(summary):
+    time = datetime.now()
+
     return {
-        "title": "Daily News Summary",
+        "title": f"{time.strftime('%A %B %d %Y')} News Summary",
         "summary": summary,
         "source": "Multiple News Sources",
-        "published_at": datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        "published_at": time.strftime("%Y-%m-%d %H:%M:%S")
     }
 
 if __name__ == "__main__":
