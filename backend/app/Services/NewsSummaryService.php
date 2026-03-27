@@ -3,7 +3,10 @@
 namespace App\Services;
 
 use App\Models\NewsSummary;
+use App\Exceptions\NewsSummaryNotFoundException;
 use Carbon\Carbon;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use Illuminate\Database\Eloquent\Collection;
 
 class NewsSummaryService
 {
@@ -12,7 +15,7 @@ class NewsSummaryService
      *
      * @return \Illuminate\Database\Eloquent\Collection
     */
-    public function getAllNews(int $perPage = 10)
+    public function getAllNews(int $perPage = 10): LengthAwarePaginator
     {
         return NewsSummary::orderBy('published_at', 'desc')->paginate($perPage);
     }
@@ -23,10 +26,10 @@ class NewsSummaryService
      * @param int $limit
      * @return \Illuminate\Database\Eloquent\Collection
     */
-    public function getLatestNews(int $limit = 7)
+    public function getLatestNews(int $limit = 7): Collection
     {
         return NewsSummary::orderBy('published_at', 'desc')
-            ->take($limit)
+            ->take(max(1, $limit))
             ->get();
     }
 
@@ -34,7 +37,7 @@ class NewsSummaryService
      * Get news by date.
      * $date should be a string 'YYYY-MM-DD'. Defaults to today.
     */
-    public function getNewsByDate(string $date = null)
+    public function getNewsByDate(string $date = null): Collection
     {
         $date = $date ? Carbon::parse($date) : Carbon::today();
 
@@ -44,13 +47,28 @@ class NewsSummaryService
     }
 
     /**
+     * Get news from the last N days grouped by date.
+     *
+     * @return \Illuminate\Support\Collection
+    */
+    public function getLatestNewsGroupedByDate(int $days = 7)
+    {
+        return NewsSummary::where('published_at', '>=', Carbon::today()->subDays(max(1, $days) - 1)->startOfDay())
+            ->orderBy('published_at', 'desc')
+            ->get()
+            ->groupBy(function ($item) {
+                return $item->published_at->format('Y-m-d');
+            });
+    }
+
+    /**
      * Get news by ID.
      *
      * @param int $id
      * @return NewsSummary|null
     */
-    public function getNewsById(int $id)
+    public function getNewsById(int $id): NewsSummary
     {
-        return NewsSummary::find($id);
+        return NewsSummary::findOrFail($id);
     }
 }

@@ -4,12 +4,10 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Services\NewsSummaryService;
-use App\Http\Controllers\Traits\ApiResponse;
+use Illuminate\Http\JsonResponse;
 
 class NewsSummaryController extends Controller
-{
-    use ApiResponse;
-    
+{   
     protected $newsService;
 
     public function __construct(NewsSummaryService $newsService)
@@ -20,67 +18,71 @@ class NewsSummaryController extends Controller
     /**
      * Get all news summaries.
     */
-    public function index(Request $request)
+    public function index(Request $request): JsonResponse
     {
-        return $this->handleRequest(function() use ($request) {
-            $perPage = (int) $request->input('per_page', 10);
-            $summaries = $this->newsService->getAllNews($perPage);
+        $perPage = (int) $request->input('per_page', 10);
+        $summaries = $this->newsService->getAllNews($perPage);
 
-            return response()->json([
-                'status' => 'success',
-                'data' => $summaries
-            ], 200);
-        });
+        return response()->json([
+            'status' => 'success',
+            'data' => $summaries
+        ]);
     }
 
     /**
      * Get latest N news.
     */
-    public function latest(Request $request)
+    public function latest(Request $request): JsonResponse
     {
-        return $this->handleRequest(function() use ($request) {
-            $limit = (int) $request->input('limit', 7);
-            $summaries = $this->newsService->getLatestNews($limit);
+        $limit = (int) $request->input('limit', 7);
+        $summaries = $this->newsService->getLatestNews($limit);
 
-            return response()->json([
-                'status' => 'success',
-                'data' => $summaries
-            ], 200);
-        });
+        return response()->json([
+            'status' => 'success',
+            'data' => $summaries
+        ]);
     }
 
     /**
-     * Get news by date
+     * Get news by date.
     */
-    public function byDate(Request $request)
+    public function byDate(Request $request): JsonResponse
     {
-        return $this->handleRequest(function() use ($request) {
-            $date = $request->input('date'); // YYYY-MM-DD
-            $summaries = $this->newsService->getNewsByDate($date);
+        $date = $request->input('date'); // YYYY-MM-DD
+        $summaries = $this->newsService->getNewsByDate($date);
 
-            return response()->json([
-                'status' => 'success',
-                'data' => $summaries
-            ], 200);
-        });
+        return response()->json([
+            'status' => 'success',
+            'data' => $summaries
+        ]);
+    }
+
+    /**
+     * Get latest news grouped by date.
+    */
+    public function latestByDate(Request $request): JsonResponse
+    {
+        $days = (int) $request->input('days', 7);
+        
+        $groupedNews = $this->newsService->getLatestNewsGroupedByDate($days);
+
+        return response()->json([
+            'status' => 'success',
+            'days_period' => $days,
+            'data' => $groupedNews
+        ]);
     }
 
     /**
      * Get news by ID.
     */
-    public function show(int $id)
+    public function show(int $id): JsonResponse
     {
-        return $this->handleRequest(function() use ($id) {
-            $summary = $this->newsService->getNewsById($id);
+        $summary = $this->newsService->getNewsById($id);
 
-            if (!$summary) {
-                throw new \Exception('Summary not found');
-            }
-
-            return response()->json([
-                'status' => 'success',
-                'data' => $summary
-            ], 200);
-        }, 404);
+        return response()->json([
+            'status' => 'success',
+            'data' => $summary
+        ]);
     }
 }
