@@ -12,7 +12,7 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule): void
     {
-        $schedule->command('news:daily')->dailyAt('07:00');
+        $schedule->command('news:daily')->twiceDaily(7, 19)->withoutOverlapping();
     }
 
     /**

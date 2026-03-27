@@ -16,28 +16,11 @@ class ProcessDailyNews extends Command
      */
     public function handle()
     {
-        $pythonScript = base_path('scripts/news_summarizer.py');
+        $this->info('Dispatching news processing job...');
+    
+        \App\Jobs\ProcessNewsJob::dispatch();
 
-        $process = new Process(['python', $pythonScript]);
-        $process->run();
-
-        if (!$process->isSuccessful()) {
-            $this->error('Python script failed: ' . $process->getErrorOutput());
-            return 1;
-        }
-
-        $output = $process->getOutput();
-
-        $data = json_decode($output, true);
-
-        if (isset($data['error'])) {
-            $this->error('Python Error: ' . $data['error']);
-            return 1;
-        }
-
-        NewsSummary::create($data);
-
-        $this->info('Daily news summary fetched and stored successfully.');
+        $this->info('Job dispatched successfully.');
         return 0;
     }
 }
