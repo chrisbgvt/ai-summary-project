@@ -76,7 +76,7 @@ def build_response(summary):
     time = datetime.now()
 
     return {
-        "title": f"{time.strftime('%A %B %d %Y')} News Summary",
+        "title": f"{time.strftime('%A %B %d %Y %H:%M')} News Summary",
         "summary": summary,
         "source": "Multiple News Sources",
         "published_at": time.strftime("%Y-%m-%d %H:%M:%S")
@@ -87,7 +87,7 @@ if __name__ == "__main__":
         articles = fetch_articles()
         summary = summarize_articles(articles)
         response = build_response(summary)
-        print(json.dumps(response, ensure_ascii=False))
+        print(json.dumps(response, ensure_ascii=True))
     except Exception as e:
         print(json.dumps({"error": str(e)}))
         exit(1)
