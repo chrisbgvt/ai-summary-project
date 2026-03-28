@@ -16,6 +16,7 @@ class ProcessNewsJob implements ShouldQueue
 
     public $tries = 3;
     public $backoff = 60;
+    public $timeout = 120;
 
     /**
      * Create a new job instance.
