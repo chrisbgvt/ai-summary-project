@@ -15,9 +15,14 @@ class NewsSummaryService
      *
      * @return \Illuminate\Database\Eloquent\Collection
     */
-    public function getAllNews(int $perPage = 10): LengthAwarePaginator
+    public function getAllNews(int $perPage = 10, ?string $date = null): LengthAwarePaginator
     {
-        return NewsSummary::orderBy('published_at', 'desc')->paginate($perPage);
+        return NewsSummary::query()
+            ->when($date, function ($query, $date) {
+                $query->whereDate('published_at', $date);
+            })
+            ->orderBy('published_at', 'desc')
+            ->paginate($perPage);
     }
 
     /**

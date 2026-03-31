@@ -21,7 +21,8 @@ class NewsSummaryController extends Controller
     public function index(Request $request): JsonResponse
     {
         $perPage = (int) $request->input('per_page', 10);
-        $summaries = $this->newsService->getAllNews($perPage);
+        $date = $request->input('date', null);
+        $summaries = $this->newsService->getAllNews($perPage, $date);
 
         return response()->json([
             'status' => 'success',
