@@ -3,6 +3,20 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\NewsSummaryController;
 
+Route::get('/', function () {
+    return response()->json([
+        'status' => 'success',
+        'message' => 'API is running',
+        'endpoints' => [
+            '/api/news',
+            '/api/news/latest',
+            '/api/news/by-date',
+            '/api/news/latest-by-date',
+            '/api/news/{id}'
+        ]
+    ]);
+});
+
 Route::get('/news', [NewsSummaryController::class, 'index']);
 Route::get('/news/latest', [NewsSummaryController::class, 'latest']);
 Route::get('/news/by-date', [NewsSummaryController::class, 'byDate']);

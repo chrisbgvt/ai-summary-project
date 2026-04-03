@@ -84,7 +84,7 @@ export default function NewsList({
                                 <Link href={`/news/${item.id}`} className="block font-semibold mb-1">
                                 {item.title}
                                 </Link>
-                                <p className="text-sm text-muted-foreground line-clamp-2">{item.summary}</p>
+                                <p className="text-sm text-muted-foreground line-clamp-1">{item.summary}</p>
                             </div>
                         ))}
                     </>
