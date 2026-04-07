@@ -63,8 +63,8 @@ def summarize_articles(articles):
 
     result = summarizer(
         prompt,
-        max_length=180,
-        min_length=60,
+        max_length=350,
+        min_length=150,
         do_sample=False,
         truncation=True
     )
