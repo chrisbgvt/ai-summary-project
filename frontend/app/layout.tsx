@@ -42,7 +42,12 @@ export default async function RootLayout({
 
                     <div className="flex flex-col flex-1 min-h-full">
                         <Header />
-                        <main className="flex-1 p-6 overflow-auto">
+                        <main className="flex-1 p-6 overflow-auto [&::-webkit-scrollbar]:w-2
+                            [&::-webkit-scrollbar-track]:bg-gray-100
+                            [&::-webkit-scrollbar-thumb]:bg-gray-300
+                            dark:[&::-webkit-scrollbar-track]:bg-neutral-700
+                            dark:[&::-webkit-scrollbar-thumb]:bg-neutral-500"
+                        >
                             {children}
                         </main>
                     </div>
