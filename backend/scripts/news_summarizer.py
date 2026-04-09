@@ -70,6 +70,12 @@ def summarize_articles(articles):
     )
 
     summary = result[0]["summary_text"].replace("SUMMARY:", "").strip()
+    
+    if not summary.endswith(('.', '!', '?')):
+        last_dot = summary.rfind('.')
+        if last_dot != -1:
+            summary = summary[:last_dot + 1]
+
     return summary
 
 def build_response(summary):
