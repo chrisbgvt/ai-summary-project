@@ -48,9 +48,9 @@ export default function SidebarClient({ newsList }: { newsList: NewsGroupedRespo
                 [&::-webkit-scrollbar]:w-2 
                 [&::-webkit-scrollbar-track]:bg-transparent
                 [&::-webkit-scrollbar-thumb]:bg-transparent
-                group-hover:[&::-webkit-scrollbar-track]:bg-gray-800/50
-                group-hover:[&::-webkit-scrollbar-thumb]:bg-gray-600
-                dark:group-hover:[&::-webkit-scrollbar-track]:bg-neutral-800/50
+                group-hover:[&::-webkit-scrollbar-track]:bg-gray-100
+                group-hover:[&::-webkit-scrollbar-thumb]:bg-gray-300
+                dark:group-hover:[&::-webkit-scrollbar-track]:bg-neutral-700
                 dark:group-hover:[&::-webkit-scrollbar-thumb]:bg-neutral-500`, isMinimized && "hidden")}
             >
                 {Object.keys(newsList).length > 0 ? (
