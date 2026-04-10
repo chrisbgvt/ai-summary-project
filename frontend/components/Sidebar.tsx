@@ -56,7 +56,7 @@ export default function SidebarClient({ newsList }: { newsList: NewsGroupedRespo
                 {Object.keys(newsList).length > 0 ? (
                     <>
                         {Object.entries(newsList).map(([date, articles]: [string, any]) => (
-                            <div key={date} className="pl-3 pr-1 mb-4">
+                            <div key={date} className="px-3 mb-4">
                                 <h3 className="text-xs font-bold text-muted-foreground mb-2">{formatRelativeDate(date)}</h3>
                                 <ul className="space-y-1">
                                     {articles.map((item: any) => (
@@ -74,7 +74,7 @@ export default function SidebarClient({ newsList }: { newsList: NewsGroupedRespo
                     <p>No news found</p>
                 )}
 
-                <div className="flex justify-center my-5 pl-3 pr-1">
+                <div className="flex justify-center my-5 px-3">
                     <Link
                         href={"/news"}
                         className="mt-4 px-4 py-[6px] w-full text-center text-white text-sm rounded-lg border disabled:bg-gray-400"
