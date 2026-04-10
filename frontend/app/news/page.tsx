@@ -19,7 +19,7 @@ export default async function NewsPage({
     }
 
     return (
-        <>
+        <div className="p-6">
             <div className="flex justify-between items-center mb-6">
                 <h2 className="">News</h2>
             </div>
@@ -31,6 +31,6 @@ export default async function NewsPage({
                     currentPage={currentPage}  
                 />
             </Suspense>
-        </>
+        </div>
     );
 }
