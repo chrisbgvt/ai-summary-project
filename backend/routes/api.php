@@ -9,8 +9,6 @@ Route::get('/', function () {
         'message' => 'API is running',
         'endpoints' => [
             '/api/news',
-            '/api/news/latest',
-            '/api/news/by-date',
             '/api/news/latest-by-date',
             '/api/news/{id}'
         ]
@@ -18,8 +16,6 @@ Route::get('/', function () {
 });
 
 Route::get('/news', [NewsSummaryController::class, 'index']);
-Route::get('/news/latest', [NewsSummaryController::class, 'latest']);
-Route::get('/news/by-date', [NewsSummaryController::class, 'byDate']);
 Route::get('/news/latest-by-date', [NewsSummaryController::class, 'latestByDate']);
 Route::get('/news/{id}', [NewsSummaryController::class, 'show'])
     ->where('id', '[0-9]+');

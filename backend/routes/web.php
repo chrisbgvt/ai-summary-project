@@ -8,8 +8,6 @@ Route::get('/', function () {
         'message' => 'API is running',
         'endpoints' => [
             '/api/news',
-            '/api/news/latest',
-            '/api/news/by-date',
             '/api/news/latest-by-date',
             '/api/news/{id}'
         ]

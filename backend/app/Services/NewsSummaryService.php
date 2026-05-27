@@ -26,32 +26,6 @@ class NewsSummaryService
     }
 
     /**
-     * Get latest N news.
-     *
-     * @param int $limit
-     * @return \Illuminate\Database\Eloquent\Collection
-    */
-    public function getLatestNews(int $limit = 7): Collection
-    {
-        return NewsSummary::orderBy('published_at', 'desc')
-            ->take(max(1, $limit))
-            ->get();
-    }
-
-    /**
-     * Get news by date.
-     * $date should be a string 'YYYY-MM-DD'. Defaults to today.
-    */
-    public function getNewsByDate(string $date = null): Collection
-    {
-        $date = $date ? Carbon::parse($date) : Carbon::today();
-
-        return NewsSummary::whereDate('published_at', $date)
-            ->orderBy('published_at', 'desc')
-            ->get();
-    }
-
-    /**
      * Get news from the last N days grouped by date.
      *
      * @return \Illuminate\Support\Collection
