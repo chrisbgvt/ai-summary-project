@@ -53,7 +53,7 @@ DAILY NEWS BRIEFING
 
 SUMMARY:
 """
-    return prompt[:2000]
+    return prompt[:6000]
 
 def summarize_articles(articles):
     if not articles:
@@ -80,9 +80,10 @@ def summarize_articles(articles):
 
 def build_response(summary):
     time = datetime.now()
+    period = "Morning" if time.hour < 12 else "Evening"
 
     return {
-        "title": f"{time.strftime('%A %B %d %Y %H:%M')} News Summary",
+        "title": f"{time.strftime('%A %B %d %Y')} - {period} News Summary",
         "summary": summary,
         "source": "Multiple News Sources",
         "published_at": time.strftime("%Y-%m-%d %H:%M:%S")

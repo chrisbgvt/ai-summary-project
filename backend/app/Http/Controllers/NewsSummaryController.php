@@ -5,10 +5,12 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Services\NewsSummaryService;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Cache;
 
 class NewsSummaryController extends Controller
 {   
     protected $newsService;
+    protected $cacheTtl = 43200;
 
     public function __construct(NewsSummaryService $newsService)
     {
@@ -21,36 +23,14 @@ class NewsSummaryController extends Controller
     public function index(Request $request): JsonResponse
     {
         $perPage = (int) $request->input('per_page', 10);
+        $page = (int) $request->input('page', 1);
         $date = $request->input('date', null);
-        $summaries = $this->newsService->getAllNews($perPage, $date);
 
-        return response()->json([
-            'status' => 'success',
-            'data' => $summaries
-        ]);
-    }
+        $cacheKey = "news:index:per_page_{$perPage}:page_{$page}:date_{$date}";
 
-    /**
-     * Get latest N news.
-    */
-    public function latest(Request $request): JsonResponse
-    {
-        $limit = (int) $request->input('limit', 7);
-        $summaries = $this->newsService->getLatestNews($limit);
-
-        return response()->json([
-            'status' => 'success',
-            'data' => $summaries
-        ]);
-    }
-
-    /**
-     * Get news by date.
-    */
-    public function byDate(Request $request): JsonResponse
-    {
-        $date = $request->input('date'); // YYYY-MM-DD
-        $summaries = $this->newsService->getNewsByDate($date);
+        $summaries = Cache::tags(['news'])->remember($cacheKey, $this->cacheTtl, fn() => 
+            $this->newsService->getAllNews($perPage, $date)->toArray()
+        );
 
         return response()->json([
             'status' => 'success',
@@ -64,8 +44,12 @@ class NewsSummaryController extends Controller
     public function latestByDate(Request $request): JsonResponse
     {
         $days = (int) $request->input('days', 7);
-        
-        $groupedNews = $this->newsService->getLatestNewsGroupedByDate($days);
+
+        $cacheKey = "news:grouped:days_{$days}";
+
+        $groupedNews = Cache::tags(['news'])->remember($cacheKey, $this->cacheTtl, fn() => 
+            $this->newsService->getLatestNewsGroupedByDate($days)->toArray()
+        );
 
         return response()->json([
             'status' => 'success',
@@ -79,7 +63,11 @@ class NewsSummaryController extends Controller
     */
     public function show(int $id): JsonResponse
     {
-        $summary = $this->newsService->getNewsById($id);
+        $cacheKey = "news:id_{$id}";
+
+        $summary = Cache::tags(['news'])->remember($cacheKey, $this->cacheTtl, fn() => 
+            $this->newsService->getNewsById($id)->toArray()
+        );
 
         return response()->json([
             'status' => 'success',
