@@ -29,7 +29,7 @@ A lightweight transformer model optimized for abstractive summarization.
 The backend is responsible for:
 
 * Storing generated summaries
-* Serving API endpoints
+* Serving API endpoints with caching powered by Redis
 * Running scheduled jobs
 * Executing the Python summarization script - backend/scripts/
 
