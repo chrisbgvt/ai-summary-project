@@ -12,4 +12,4 @@ Route::get('/', function () {
             '/api/news/{id}'
         ]
     ]);
-});
+})->middleware('throttle:60,1');
