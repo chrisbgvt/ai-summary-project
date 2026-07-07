@@ -1,0 +1,37 @@
+# Secrets — never bake these into an image layer
+.env
+.env.*
+!.env.example
+
+# VCS / IDE
+.git
+.gitignore
+.idea
+.vscode
+
+# Dependencies (installed fresh inside the image)
+vendor
+node_modules
+
+# Laravel runtime/cache artifacts (should be volumes, not image content)
+storage/logs/*
+storage/framework/cache/*
+storage/framework/sessions/*
+storage/framework/views/*
+storage/framework/testing/*
+bootstrap/cache/*.php
+
+# Tests / tooling
+tests
+.phpunit.result.cache
+.phpunit.cache
+
+# Docker meta files (no need to copy these into the image itself)
+Dockerfile
+.dockerignore
+docker-compose.yml
+docker-compose.override.yml
+
+# Misc
+*.md
+.DS_Store

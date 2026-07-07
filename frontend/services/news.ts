@@ -1,6 +1,7 @@
+import { getApiUrl } from "../lib/api";
 import { News, NewsGroupedResponse } from "../types/news";
 
-const API_URL = `${process.env.NEXT_PUBLIC_API_URL}/api/news`;
+const API_URL = `${getApiUrl()}/api/news`;
 
 export async function getGroupedNews(): Promise<NewsGroupedResponse> {
     const res = await fetch(`${API_URL}/latest-by-date`, {

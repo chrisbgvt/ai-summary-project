@@ -1,8 +1,9 @@
 "use server";
 
+import { getApiUrl } from "../lib/api";
 import { PaginatedNews } from "../types/news";
 
-const API_URL = `${process.env.NEXT_PUBLIC_API_URL}/api/news`;
+const API_URL = `${getApiUrl()}/api/news`;
 
 export async function getAllNews({ page = 1, date = '' }): Promise<PaginatedNews> {
     const res = await fetch(`${API_URL}?page=${page}&date=${date}`, {

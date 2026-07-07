@@ -16,7 +16,7 @@ class ProcessNewsJob implements ShouldQueue
 
     public $tries = 3;
     public $backoff = 60;
-    public $timeout = 240;
+    public $timeout = 600;
 
     /**
      * Create a new job instance.
@@ -33,7 +33,8 @@ class ProcessNewsJob implements ShouldQueue
     {
         $pythonScript = base_path('scripts/news_summarizer.py');
         
-        $process = new Process(['python', $pythonScript]);
+        $process = new Process(['python3', $pythonScript]);
+        $process->setTimeout(600);
         $process->run();
 
         if (!$process->isSuccessful()) {

@@ -1,0 +1,55 @@
+# Auto-loaded alongside docker-compose.yml whenever you run
+# `docker compose up` with no -f flags - no extra typing needed for dev.
+#
+# For a real deployment, this file should NOT be present / NOT be loaded.
+# Explicitly run: docker compose -f docker-compose.yml up
+# (Compose only auto-merges docker-compose.override.yml, never other names.)
+
+services:
+  migrate:
+    volumes:
+      - ./backend:/var/www/html
+      - migrate-vendor:/var/www/html/vendor
+
+  backend:
+    build:
+      target: dev
+    volumes:
+      - ./backend:/var/www/html
+      - backend-vendor:/var/www/html/vendor
+    ports:
+      - "8000:8000"
+
+  queue:
+    volumes:
+      - ./backend:/var/www/html
+      - queue-vendor:/var/www/html/vendor
+    command: php artisan queue:work --tries=3 --sleep=3
+
+  scheduler:
+    volumes:
+      - ./backend:/var/www/html
+      - scheduler-vendor:/var/www/html/vendor
+
+  nginx:
+    profiles:
+      - donotstart
+
+  frontend:
+    build:
+      target: dev
+    environment:
+      NEXT_PUBLIC_API_URL: http://localhost:8000
+      API_INTERNAL_URL: http://backend:8000
+    depends_on:
+      - backend
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+      - /app/.next
+
+volumes:
+  backend-vendor:
+  queue-vendor:
+  scheduler-vendor:
+  migrate-vendor:
