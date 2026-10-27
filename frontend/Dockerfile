@@ -1,5 +1,5 @@
 # ---------- Stage 1: Install deps (shared by dev + prod) ----------
-FROM node:20-alpine AS deps
+FROM node:24-alpine AS deps
 
 WORKDIR /app
 
@@ -10,7 +10,7 @@ RUN npm ci
 
 # ---------- DEV target ----------
 # Only rebuild this when package.json changes.
-FROM node:20-alpine AS dev
+FROM node:24-alpine AS dev
 
 WORKDIR /app
 ENV NODE_ENV=development
@@ -22,7 +22,7 @@ CMD ["npm", "run", "dev"]
 
 
 # ---------- Stage: Build (prod only) ----------
-FROM node:20-alpine AS builder
+FROM node:24-alpine AS builder
 
 WORKDIR /app
 
@@ -36,7 +36,7 @@ RUN npm run build
 
 
 # ---------- PROD target ----------
-FROM node:20-alpine AS prod
+FROM node:24-alpine AS prod
 
 WORKDIR /app
 
